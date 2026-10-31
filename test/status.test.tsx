@@ -10,7 +10,14 @@ describe('status board', () => {
     const html = await res.text();
     expect(res.status).toBe(200);
     expect(html).toContain('TEST-MARKER');
-    expect(html).toContain('2026-10-28');
+    expect(html).toContain('href="/digest/2026-10-28"');
+    expect(html).toContain('href="/digest/2026-10-27"');
+    expect(html).toContain('4 ok · 0 retry · 1 fail');
+    expect(html).toContain('4 ok · 0 retry · 0 fail');
+    const newer = await createApp(config).request('/digest/2026-10-28');
+    const older = await createApp(config).request('/digest/2026-10-27');
+    expect(newer.status).toBe(200);
+    expect(older.status).toBe(200);
   });
 
   it('health answers with the lane id', async () => {
